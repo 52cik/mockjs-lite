@@ -1,0 +1,16 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": "4.0",
+          "ie": 9
+        },
+        "modules": false,
+        "loose": true
+      }
+    ]
+  ],
+  "plugins": ["external-helpers", "transform-object-rest-spread"]
+}

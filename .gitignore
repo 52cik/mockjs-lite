@@ -1,0 +1,12 @@
+node_modules
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode
+.*.swp
+.idea
+npm-debug.log
+yarn.lock
+
+coverage
+.nyc_output

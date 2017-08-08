@@ -1,20 +1,42 @@
 {
   "name": "mockjs-lite",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A minimalist simulation data generator",
-  "main": "index.js",
+  "main": "dist/mock.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "rollup -c -w --environment NODE_ENV:development",
+    "build": "rollup -c --environment NODE_ENV:production",
+    "test": "ava",
+    "test-cov": "nyc --reporter=html --reporter=text ava",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/52cik/mockjs-lite.git"
   },
-  "keywords": [],
+  "keywords": [
+    "mock",
+    "mockjs"
+  ],
   "author": "楼教主 <fe.52cik@gmail.com> (http://www.52cik.com/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/52cik/mockjs-lite/issues"
   },
-  "homepage": "https://github.com/52cik/mockjs-lite#readme"
+  "homepage": "https://github.com/52cik/mockjs-lite#readme",
+  "devDependencies": {
+    "ava": "^0.21.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "coveralls": "^2.13.1",
+    "eslint": "^4.3.0",
+    "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-plugin-import": "^2.7.0",
+    "nyc": "^11.1.0",
+    "rollup": "^0.45.2",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-uglify": "^2.0.1",
+    "rollup-watch": "^4.3.1"
+  }
 }
