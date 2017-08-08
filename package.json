@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "rollup -c -w --environment NODE_ENV:development",
     "build": "rollup -c --environment NODE_ENV:production",
-    "test": "ava",
+    "test": "nyc ava",
     "test-cov": "nyc --reporter=html --reporter=text ava",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
