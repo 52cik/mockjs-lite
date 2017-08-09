@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Random } from '..';
+import { Random } from '../..';
 
 /* Random basic */
 test('Random.integer', (t) => {
@@ -21,7 +21,7 @@ test('Random.boolean', (t) => {
 test('Random.float', (t) => {
   t.true(typeof Random.float() === 'number');
   let ret = Random.float(1, 9, 3);
-  t.true(ret >= 1 && ret <= 9 && String(ret).length >= 5);
+  t.true(ret > 1 && ret < 10 && String(ret).length >= 5);
   ret = Random.float(9, 9, 3);
   t.true(Math.floor(ret) === 9 && String(ret).length >= 5);
   ret = Random.float(9, 9, 3, 5);

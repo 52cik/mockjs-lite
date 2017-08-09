@@ -159,6 +159,496 @@ var basic = Object.freeze({
 	range: range
 });
 
+/**
+ * 格式日期，网上抄的，eslit fix 了下而已。
+ *
+ * @param {string} fmt 格式化字符串
+ * @param {Date} dt 日期对象
+ * @returns
+ */
+function dateFormat(fmt, dt) {
+  var o = {
+    'M+': dt.getMonth() + 1, // 月份
+    'd+': dt.getDate(), // 日
+    'h+': dt.getHours(), // 小时
+    'm+': dt.getMinutes(), // 分
+    's+': dt.getSeconds(), // 秒
+    'q+': Math.floor((dt.getMonth() + 3) / 3), // 季度
+    S: dt.getMilliseconds() // 毫秒
+  };
+
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, ('' + dt.getFullYear()).substr(4 - RegExp.$1.length));
+  }
+
+  /* eslint no-restricted-syntax:0 */
+  for (var k in o) {
+    if (new RegExp('(' + k + ')').test(fmt)) {
+      var rep = RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length);
+      fmt = fmt.replace(RegExp.$1, rep);
+    }
+  }
+
+  return fmt;
+}
+
+/**
+ * 随机生成 [1970-01-01, 10年后] 区间的日期对象
+ *
+ * @returns
+ */
+function randomDate() {
+  var min = new Date(0); // 1970-01-01
+  var max = new Date();
+  max.setFullYear(max.getFullYear() + 10); // 10年后
+  return new Date(Math.random() * (max.getTime() - min.getTime()));
+}
+
+/**
+ * 日期部分格式化
+ *
+ * @export
+ * @param {string} format
+ * @returns
+ */
+function date(format) {
+  return dateFormat(format || 'yyyy-MM-dd', randomDate());
+}
+
+/**
+ * 时分秒部分格式化
+ *
+ * @export
+ * @param {string} format
+ * @returns
+ */
+function time(format) {
+  return dateFormat(format || 'hh:mm:ss', randomDate());
+}
+
+/**
+ * 完整时间部分格式化
+ *
+ * @export
+ * @param {string} format
+ * @returns
+ */
+function datetime(format) {
+  return dateFormat(format || 'yyyy-MM-dd hh:mm:ss', randomDate());
+}
+
+/**
+ * 当前时间格式化
+ *
+ * @export
+ * @param {string} format
+ * @returns
+ */
+function now(format) {
+  return dateFormat(format || 'yyyy-MM-dd hh:mm:ss', new Date());
+}
+
+var date$1 = Object.freeze({
+	date: date,
+	time: time,
+	datetime: datetime,
+	now: now
+});
+
+function capitalize(word) {
+  word = String(word);
+  return word.charAt(0).toUpperCase() + word.substr(1);
+}
+
+/**
+ * 把字符串转换为大写
+ *
+ * @export
+ * @param {string} str
+ * @returns
+ */
+function upper(str$$1) {
+  return String(str$$1).toUpperCase();
+}
+
+/**
+ * 把字符串转换为小写
+ *
+ * @export
+ * @param {string} str
+ * @returns
+ */
+function lower(str$$1) {
+  return String(str$$1).toLowerCase();
+}
+
+/**
+ * 打乱数组中元素的顺序
+ * @param {array} arr
+ * @see https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+ */
+function shuffle(arr, min, max) {
+  arr = arr.slice(0);
+  for (var i = arr.length; i; i--) {
+    var j = Math.floor(Math.random() * i);
+    var _ref = [arr[j], arr[i - 1]];
+    arr[i - 1] = _ref[0];
+    arr[j] = _ref[1];
+  }
+
+  switch (arguments.length) {
+    case 2:
+      max = min;
+    /* falls through */
+    case 3:
+      min = parseInt(min, 10);
+      max = parseInt(max, 10);
+      return arr.slice(0, integer(min, max));
+    default:
+      return arr;
+  }
+}
+
+/**
+ * 从数组中随机选取一个元素，并返回
+ *
+ * @export
+ * @param {array} arr
+ * @param {number} min
+ * @param {number} max
+ */
+function pick(arr, min, max) {
+  if (!(arr instanceof Array)) {
+    /* eslint prefer-rest-params:0 */
+    arr = [].slice.call(arguments);
+    min = 1;
+    max = 1;
+  } else {
+    // pick( [ item1, item2 ... ] )
+    if (min === undefined) min = 1;
+    // pick( [ item1, item2 ... ], count )
+    if (max === undefined) max = min;
+  }
+
+  if (min === 1 && max === 1) {
+    return arr[integer(0, arr.length - 1)];
+  }
+
+  return shuffle(arr, min, max);
+}
+
+var helper = Object.freeze({
+	capitalize: capitalize,
+	upper: upper,
+	lower: lower,
+	shuffle: shuffle,
+	pick: pick
+});
+
+// 七牛占位图 host，支持 https
+var host = 'dn-placeholder.qbox.me';
+
+// 常见的广告宽高
+var adSize = ['300x250', '250x250', '240x400', '336x280', '180x150', '720x300', '468x60', '234x60', '88x31', '120x90', '120x60', '120x240', '125x125', '728x90', '160x600', '120x600', '300x600'];
+
+// 常见的屏幕宽高 (暂时没用)
+// const screenSize = [
+//   '320x200',
+//   '320x240',
+//   '640x480',
+//   '800x480',
+//   '800x480',
+//   '1024x600',
+//   '1024x768',
+//   '1280x800',
+//   '1440x900',
+//   '1920x1200',
+//   '2560x1600',
+// ];
+
+// 常见的视频宽高 (暂时没用)
+// const videoSize = ['720x480', '768x576', '1280x720', '1920x1080'];
+
+/**
+ * 设置 host 用于自定义占位图
+ *
+ * @export
+ * @param {any} newHost
+ */
+function setImageHost(newHost) {
+  host = newHost;
+}
+
+/**
+ * 生成一个随机的占位图
+ *
+ * @export
+ * @param {string} size
+ * @param {string} background
+ * @param {string} foreground
+ * @param {string} format
+ * @param {string} text
+ * @returns
+ */
+function image(size, background, foreground, format, text) {
+  // Random.image( size, background, foreground, text )
+  if (arguments.length === 4) {
+    text = format;
+    format = undefined;
+  }
+  // Random.image( size, background, text )
+  if (arguments.length === 3) {
+    text = foreground;
+    foreground = undefined;
+  }
+  // Random.image()
+  if (!size) {
+    size = pick(adSize);
+  }
+
+  return 'http://' + host + '/' + size + (background ? '/' + background : '') + (foreground ? '/' + foreground : '') + (format ? '.' + format : '') + (text ? '&text=' + text : '');
+}
+
+var image$1 = Object.freeze({
+	setImageHost: setImageHost,
+	image: image
+});
+
+/**
+ * Color 字典数据
+ *
+ * 字典数据来源 [A nicer color palette for the web](http://clrs.cc/)
+ */
+var DICT = {
+  // name value nicer
+  navy: {
+    value: '#000080',
+    nicer: '#001F3F'
+  },
+  blue: {
+    value: '#0000ff',
+    nicer: '#0074D9'
+  },
+  aqua: {
+    value: '#00ffff',
+    nicer: '#7FDBFF'
+  },
+  teal: {
+    value: '#008080',
+    nicer: '#39CCCC'
+  },
+  olive: {
+    value: '#008000',
+    nicer: '#3D9970'
+  },
+  green: {
+    value: '#008000',
+    nicer: '#2ECC40'
+  },
+  lime: {
+    value: '#00ff00',
+    nicer: '#01FF70'
+  },
+  yellow: {
+    value: '#ffff00',
+    nicer: '#FFDC00'
+  },
+  orange: {
+    value: '#ffa500',
+    nicer: '#FF851B'
+  },
+  red: {
+    value: '#ff0000',
+    nicer: '#FF4136'
+  },
+  maroon: {
+    value: '#800000',
+    nicer: '#85144B'
+  },
+  fuchsia: {
+    value: '#ff00ff',
+    nicer: '#F012BE'
+  },
+  purple: {
+    value: '#800080',
+    nicer: '#B10DC9'
+  },
+  silver: {
+    value: '#c0c0c0',
+    nicer: '#DDDDDD'
+  },
+  gray: {
+    value: '#808080',
+    nicer: '#AAAAAA'
+  },
+  black: {
+    value: '#000000',
+    nicer: '#111111'
+  },
+  white: {
+    value: '#FFFFFF',
+    nicer: '#FFFFFF'
+  }
+};
+
+var goldenRatio = 0.618033988749895;
+var hue = Math.random();
+
+/**
+ * 随机生成一个有吸引力的颜色
+ *
+ * @param {any} saturation
+ * @param {any} value
+ * @returns
+ *
+ * @see http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+ * @see https://github.com/devongovett/color-generator/blob/master/index.js
+ */
+function goldenRatioColor(saturation, value) {
+  hue += goldenRatio;
+  hue %= 1;
+
+  if (typeof saturation !== 'number') {
+    saturation = 0.5;
+  }
+
+  if (typeof value !== 'number') {
+    value = 0.95;
+  }
+
+  return [hue * 360, saturation * 100, value * 100];
+}
+
+/* eslint-disable */
+function hsv2hsl(hsv) {
+  var h = hsv[0],
+      s = hsv[1] / 100,
+      v = hsv[2] / 100,
+      sl,
+      l;
+
+  l = (2 - s) * v;
+  sl = s * v;
+  sl /= l <= 1 ? l : 2 - l;
+  l /= 2;
+  return [h, sl * 100, l * 100];
+}
+
+function hsv2rgb(hsv) {
+  var h = hsv[0] / 60;
+  var s = hsv[1] / 100;
+  var v = hsv[2] / 100;
+  var hi = Math.floor(h) % 6;
+
+  var f = h - Math.floor(h);
+  var p = 255 * v * (1 - s);
+  var q = 255 * v * (1 - s * f);
+  var t = 255 * v * (1 - s * (1 - f));
+
+  v = 255 * v;
+
+  switch (hi) {
+    case 0:
+      return [v, t, p];
+    case 1:
+      return [q, v, p];
+    case 2:
+      return [p, v, t];
+    case 3:
+      return [p, q, v];
+    case 4:
+      return [t, p, v];
+    case 5:
+      return [v, p, q];
+  }
+}
+
+/**
+ * rgb 转 hex
+ *
+ * @param {any} r
+ * @param {any} g
+ * @param {any} b
+ * @returns
+ *
+ */
+function rgb2hex(r, g, b) {
+  return ((256 + r << 8 | g) << 8 | b).toString(16).slice(1);
+}
+/* eslint-enable */
+
+/**
+ * 随机生成一个颜色，格式为 '#RRGGBB' 或 'RRGGBB'
+ *
+ * @export
+ * @param {bool} symbol
+ * @returns
+ */
+function hex(symbol) {
+  var hsv = goldenRatioColor();
+  var rgbVal = hsv2rgb(hsv);
+  var ret = rgb2hex(rgbVal[0], rgbVal[1], rgbVal[2]);
+  return symbol ? '#' + ret : ret;
+}
+
+/**
+ * rgb颜色 rgb(128,255,255)
+ *
+ * @export
+ * @returns
+ */
+function rgb() {
+  var hsv = goldenRatioColor();
+  var ret = hsv2rgb(hsv);
+  return 'rgb(' + parseInt(ret[0], 10) + ', ' + parseInt(ret[1], 10) + ', ' + parseInt(ret[2], 10) + ')';
+}
+
+/**
+ * rgba颜色 rgba(128,255,255,0.3)
+ *
+ * @export
+ * @returns
+ */
+function rgba() {
+  var hsv = goldenRatioColor();
+  var ret = hsv2rgb(hsv);
+  return 'rgba(' + parseInt(ret[0], 10) + ', ' + parseInt(ret[1], 10) + ', ' + parseInt(ret[2], 10) + ', ' + Math.random().toFixed(2) + ')';
+}
+
+/**
+ * hsl颜色 hsl(300,80%,90%)
+ *
+ * @export
+ * @returns
+ */
+function hsl() {
+  var hsv = goldenRatioColor();
+  var ret = hsv2hsl(hsv);
+  return 'hsl(' + parseInt(ret[0], 10) + ', ' + parseInt(ret[1], 10) + ', ' + parseInt(ret[2], 10) + ')';
+}
+
+/**
+ * 随机生成一个有吸引力的颜色，格式为 '#RRGGBB'
+ *
+ * @export
+ * @param {any} name
+ * @returns
+ */
+function color(name) {
+  if (name || DICT[name]) {
+    return DICT[name].nicer;
+  }
+  return hex(true);
+}
+
+var color$1 = Object.freeze({
+	hex: hex,
+	rgb: rgb,
+	rgba: rgba,
+	hsl: hsl,
+	color: color
+});
+
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
@@ -173,16 +663,8 @@ var _extends = Object.assign || function (target) {
   return target;
 };
 
-var Random = _extends({}, basic);
+var Random = _extends({}, basic, date$1, image$1, color$1, helper);
 
-/* eslint no-confusing-arrow:0 */
-/* eslint no-underscore-dangle:0 */
-
-/**
- * Object#toString
- *
- * @function toString
- */
 var toString = Object.prototype.toString;
 
 /**
@@ -393,21 +875,11 @@ var processors = {
   }
 };
 
-/**
- * 数据生成器入口
- *
- * @export
- * @param {any} data mock 模板数据
- * @param {string} key 当前数据的 key
- * @param {object} opts 公用数据
- * @returns {any}
- */
 function generator(data, key, opts) {
   var processor = processors[type(data)];
   return processor ? processor(data, key, opts) : data;
 }
 
-// 生成器包装
 var Mock = {
   mock: function mock(any) {
     var opts = { rootTpl: any, callbacks: [] };
