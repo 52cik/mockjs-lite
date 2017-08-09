@@ -14,10 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/52cik/mockjs-lite.git"
   },
-  "keywords": [
-    "mock",
-    "mockjs"
-  ],
+  "keywords": ["mock", "mockjs"],
   "author": "楼教主 <fe.52cik@gmail.com> (http://www.52cik.com/)",
   "license": "MIT",
   "bugs": {
@@ -38,5 +35,8 @@
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-uglify": "^2.0.1",
     "rollup-watch": "^4.3.1"
+  },
+  "engines": {
+    "node": ">=4"
   }
 }
