@@ -1,7 +1,13 @@
 import test from 'ava';
 import Mock from '..';
 
+/* 数据模板定义 (Data Temaplte Definition，DTD) */
+
 /* string */
+test('Mock.mock({ "str|3": "" })', (t) => {
+  t.regex(JSON.stringify(Mock.mock({ 'str|3': '' })), /{"str":"\w{3}"}/);
+});
+
 test('Mock.mock({ "str|3": "x" })', (t) => {
   t.deepEqual(Mock.mock({ 'str|3': 'x' }), { str: 'xxx' });
 });

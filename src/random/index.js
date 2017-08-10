@@ -1,15 +1,10 @@
-import * as basic from './basic';
-import * as date from './date';
-import * as image from './image';
-import * as color from './color';
-
-import * as helper from './helper';
-
-export default {
-  ...basic,
-  ...date,
-  ...image,
-  ...color,
-
-  ...helper,
-};
+export * from './helper';
+export * from './basic';
+export * from './date';
+export * from './image';
+export * from './color';
+export * from './text';
+export * from './name';
+export * from './web';
+export * from './address';
+export * from './misc';

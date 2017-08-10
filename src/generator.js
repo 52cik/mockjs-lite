@@ -1,4 +1,4 @@
-import Random from './random/index';
+import * as Random from './random/index';
 
 /* eslint no-confusing-arrow:0 */
 /* eslint no-underscore-dangle:0 */
@@ -9,6 +9,12 @@ import Random from './random/index';
  * @function toString
  */
 const toString = Object.prototype.toString;
+/**
+ * Object#hasOwnProperty
+ *
+ * @function toString
+ */
+const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 /**
  * 获取数据类型
@@ -59,7 +65,7 @@ const processors = {
 
     if (count >= length) {
       // 函数放末尾处理 'name': function
-      keys.sort(k => type(k) === 'function' ? 1 : 0);
+      keys.sort(k => (type(k) === 'function' ? 1 : 0));
       // 处理全部
       keys.forEach((it) => {
         ret[it.replace(/\|.+/, '')] = generator(tpl[it], it, opts);
@@ -181,7 +187,26 @@ const processors = {
       str = Array(count + 1).join(tpl); // 重复N次
     }
 
-    // TODO: 占位符处理
+    // 占位符处理 'name': '@date @now @name'
+    str = str.replace(/@(\w+)(?:\(([^)]*)\))?/g, (all, holder, param) => {
+      if (!hasOwnProperty.call(Random, holder)) {
+        return all;
+      }
+
+      let params = [];
+
+      if (param) {
+        try {
+          /* eslint no-new-func:0 */
+          params = new Function(`return [${param}]`)();
+        } catch (err) {
+          // noop
+        }
+      }
+
+      // 调用占位符方法
+      return Random[holder].apply(null, params);
+    });
 
     return str;
   },
