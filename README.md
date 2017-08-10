@@ -9,8 +9,16 @@
   [![node][node-image]][node-url]
   [![license MIT][license-image]][license-url]
 
+[中文文档](README.zh-CN.md)
+
+Refer to [Mock.js](https://github.com/nuysoft/Mock)
+
+Retained the common functions and modified some tool methods.
 
 
+## License
+
+Mock.js is available under the terms of the MIT License.
 
 
 [travis-url]: https://travis-ci.org/52cik/mockjs-lite
