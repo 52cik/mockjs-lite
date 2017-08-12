@@ -16,3 +16,7 @@ test('Random.increment', (t) => {
   t.true(Random.increment() === 2);
   t.true(Random.increment() === 3);
 });
+
+test('Random.mobile', (t) => {
+  t.regex(Random.mobile(), /^1[3|4|5|7|8][0-9]{9}$/);
+});

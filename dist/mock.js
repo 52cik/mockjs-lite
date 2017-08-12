@@ -5178,6 +5178,16 @@ function increment(step) {
  */
 var inc = increment;
 
+/**
+ * 随机生成一个国内手机号码
+ *
+ * @export
+ * @returns
+ */
+function mobile() {
+  return '1' + character('34579') + string('number', 9);
+}
+
 
 
 var Random = Object.freeze({
@@ -5235,7 +5245,8 @@ var Random = Object.freeze({
 	guid: guid,
 	id: id,
 	increment: increment,
-	inc: inc
+	inc: inc,
+	mobile: mobile
 });
 
 /* eslint no-confusing-arrow:0 */

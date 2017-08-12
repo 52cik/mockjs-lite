@@ -1,5 +1,5 @@
 import { pick } from './helper';
-import { string } from './basic';
+import { character, string } from './basic';
 import { date } from './date';
 import DICT from './address_dict';
 
@@ -72,3 +72,13 @@ export function increment(step) {
  * @returns
  */
 export const inc = increment;
+
+/**
+ * 随机生成一个国内手机号码
+ *
+ * @export
+ * @returns
+ */
+export function mobile() {
+  return `1${character('34579')}${string('number', 9)}`;
+}
