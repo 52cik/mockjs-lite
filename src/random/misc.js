@@ -80,5 +80,5 @@ export const inc = increment;
  * @returns
  */
 export function mobile() {
-  return `1${character('34579')}${string('number', 9)}`;
+  return `1${character('34578')}${string('number', 9)}`;
 }

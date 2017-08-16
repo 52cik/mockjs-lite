@@ -45,9 +45,9 @@ export function city(prefix) {
  * @returns
  */
 export function county(prefix) {
-  const provinceItem = this.pick(DICT);
-  const cityItem = this.pick(provinceItem.children);
-  const countyItem = this.pick(cityItem.children) || { name: '-' };
+  const provinceItem = pick(DICT);
+  const cityItem = pick(provinceItem.children);
+  const countyItem = pick(cityItem.children) || { name: '-' };
   return prefix ? [provinceItem.name, cityItem.name, countyItem.name].join(' ') : countyItem.name;
 }
 

@@ -145,7 +145,7 @@ export function hsl() {
  */
 export function color(name) {
   if (name || DICT[name]) {
-    return DICT[name].nicer;
+    return DICT[name];
   }
   return hex(true);
 }
