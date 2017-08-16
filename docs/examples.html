@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="http://lib.baomitu.com/bulma/0.5.1/css/bulma.min.css" rel="stylesheet">
+  <link href="http://lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="http://lib.baomitu.com/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet">
+  <link href="http://lib.baomitu.com/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+  <title>mockjs-lite 示例</title>
+  <style>
+  [v-cloak]{display:none;}
+  code,pre,samp{font-family:Menlo,Monaco,Consolas,"Courier New",monospace;}
+  .definition .title{margin:2em 0 1em 0;}
+  .definition .code pre{position:relative;}
+  .definition .code pre:after{position:absolute;top:50%;right:-20px;display:inline-block;margin-top:-13px;width:20px;height:20px;color:#999;content:'\279c';text-align:center;font-size:20px;}
+  .definition .result{position:relative;}
+  .definition .result .refresh{position:absolute;top:1em;right:1em;color:#ccc;}
+  .definition .hljs{padding:1em;white-space:pre-wrap;word-wrap:break-word;word-break:break-all;}
+  </style>
+</head>
+<body>
+<div id="app">
+  <section class="hero is-primary">
+    <div class="hero-head">
+      <header class="nav">
+        <div class="container">
+          <div class="nav-left">
+            <a href="/" class="nav-item">
+              <strong>Mockjs Lite</strong>
+            </a>
+          </div>
+          <div class="nav-right nav-menu">
+            <a class="nav-item" href="/">首页</a>
+            <a class="nav-item is-active" href="/examples.html">示例</a>
+            <a class="nav-item" href="https://github.com/52cik/mockjs-lite" target="_blank">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </header>
+    </div>
+  </section>
+    
+  <section class="section" v-cloak>
+    <div class="container">
+      <div class="columns">
+        <div class="column is-2">
+          <aside class="menu">
+            <p class="menu-label">数据模板定义</p>
+            <ul class="menu-list">
+              <li v-for="it of DTD"><a :href="'#' + it.label">{{it.label}}</a></li>
+            </ul>
+
+            <p class="menu-label">数据占位符定义</p>
+            <ul class="menu-list">
+              <li v-for="group of menuList[1].children">
+                <p class="menu-label">{{group.label}}</p>
+                <ul>
+                  <li v-for="it of group.children"><a :href="it.href">{{it.label}}</a></li>
+                </ul>
+              </li>
+            </ul>
+          </aside>
+        </div>
+        <div class="column definition">
+
+          <h5 class="title is-5">数据模板定义</h5>
+          <section v-for="item of DTD">
+            <h6 class="title is-6" :id="item.label">{{item.label}}</h6>
+
+            <template v-for="demo of item.demos">
+              <code>{{demo.title}}</code>
+              <div v-for="test of demo.test" class="columns">
+                <div class="column code is-half">
+                  <pre><code class="hljs js" v-html="showSource(test)"></code></pre>
+                </div>
+                <div class="column result is-half">
+                  <pre><code class="hljs json" v-html="showResult(test)"></code></pre>
+                  <a class="button is-light refresh" @click="onRefresh(test, $event)">
+                    <span class="icon is-small"><i class="fa fa-refresh"></i></span>
+                  </a>
+                </div>
+              </div>
+            </template>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="http://lib.baomitu.com/vue/2.4.2/vue.min.js"></script>
+<script src="http://lib.baomitu.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="/dist/mock.js"></script>
+<script src="/docs/assets/js/test.dtd.data.js"></script>
+<script src="/docs/assets/js/test.dpd.data.js"></script>
+<script src="/docs/assets/js/examples.js"></script>
+</body>
+</html>
