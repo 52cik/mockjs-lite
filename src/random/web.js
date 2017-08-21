@@ -6,7 +6,7 @@ import { word } from './text';
 const PROTOCOLS = ('' +
   // 'http https ws wss ssh ftp gopher mailto mid cid news nntp prospero telnet rlogin tn3270 wais' +
   // 选择几个常用的协议
-  'http https ws wss ssh ftp' +
+  'http https ws wss ftp' +
   '').split(' ');
 
 // Top Level Domain
@@ -81,6 +81,18 @@ export function domain(secondLevelDomain, topLevelDomain) {
   arr.push(topLevelDomain || tld());
 
   return arr.join('.');
+}
+
+/**
+ * 随机生成一个 URL
+ *
+ * @export
+ * @param {string} protocolName
+ * @param {string} host
+ * @returns
+ */
+export function url(protocolName, host) {
+  return `${protocolName || protocol()}://${host || domain()}/${word()}`;
 }
 
 /**

@@ -22,6 +22,12 @@ test('Random.domain', (t) => {
   t.regex(Random.domain('admin', 'com'), /^admin\.\w+\.com$/);
 });
 
+test('Random.url', (t) => {
+  t.regex(Random.url(), /^\w+:\/\/[a-z.]+\/\w+$/);
+  t.regex(Random.url('https'), /^https:\/\/[a-z.]+\/\w+$/);
+  t.regex(Random.url('https', 'm.taobao.com'), /^https:\/\/m\.taobao\.com\/\w+$/);
+});
+
 test('Random.email', (t) => {
   t.regex(Random.email(), /^[a-z]\.\w+@\w+\.[a-z.]+$/);
   t.regex(Random.email('qq.com'), /^[a-z]\.\w+@qq\.com$/);

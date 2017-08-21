@@ -146,6 +146,13 @@ function range(start, stop, step) {
   return arr;
 }
 
+/**
+ * 把字符串的第一个字母转换为大写
+ *
+ * @export
+ * @param {string} word
+ * @returns
+ */
 function capitalize(word) {
   word = String(word);
   return word.charAt(0).toUpperCase() + word.substr(1);
@@ -228,6 +235,13 @@ function pick(arr, min, max) {
   return shuffle(arr, min, max);
 }
 
+/**
+ * 格式日期，网上抄的，eslit fix 了下而已。
+ *
+ * @param {string} fmt 格式化字符串
+ * @param {Date} dt 日期对象
+ * @returns
+ */
 function dateFormat(fmt, dt) {
   var o = {
     'M+': dt.getMonth() + 1, // 月份
@@ -380,6 +394,7 @@ function now(format) {
   return dateFormat(format || 'yyyy-MM-dd hh:mm:ss', new Date());
 }
 
+// 七牛占位图 host，支持 https
 var host = 'dn-placeholder.qbox.me';
 
 // 常见的广告宽高
@@ -826,6 +841,7 @@ function ctitle(min, max) {
   return result.join('');
 }
 
+// male
 var nameMale = 'James John Robert Michael William David Richard Charles Joseph Thomas Christopher Daniel Paul Mark Donald George Kenneth Steven Edward Brian Ronald Anthony Kevin Jason Matthew Gary Timothy Jose Larry Jeffrey Frank Scott Eric';
 
 // female
@@ -904,10 +920,11 @@ function cname() {
   return cfirst() + clast();
 }
 
+// 协议簇
 var PROTOCOLS = ('' +
 // 'http https ws wss ssh ftp gopher mailto mid cid news nntp prospero telnet rlogin tn3270 wais' +
 // 选择几个常用的协议
-'http https ws wss ssh ftp' + '').split(' ');
+'http https ws wss ftp' + '').split(' ');
 
 // Top Level Domain
 var TOP_LEVEL_DOMAINS = ('' +
@@ -977,6 +994,18 @@ function domain(secondLevelDomain, topLevelDomain) {
   arr.push(topLevelDomain || tld());
 
   return arr.join('.');
+}
+
+/**
+ * 随机生成一个 URL
+ *
+ * @export
+ * @param {string} protocolName
+ * @param {string} host
+ * @returns
+ */
+function url(protocolName, host) {
+  return (protocolName || protocol()) + '://' + (host || domain()) + '/' + word();
 }
 
 /**
@@ -1248,6 +1277,14 @@ function zip(len) {
   return string('number', len || 6);
 }
 
+/**
+ * 随机生成一个 GUID (uuid v4)
+ *
+ * @export
+ * @returns
+ *
+ * @see https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript#answer-2117523
+ */
 function uuid() {
   /* eslint no-bitwise:0 */
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -1366,6 +1403,7 @@ var Random = Object.freeze({
 	protocol: protocol,
 	tld: tld,
 	domain: domain,
+	url: url,
 	email: email,
 	ip: ip,
 	region: region,
@@ -1381,6 +1419,14 @@ var Random = Object.freeze({
 	mobile: mobile
 });
 
+/* eslint no-confusing-arrow:0 */
+/* eslint no-underscore-dangle:0 */
+
+/**
+ * Object#toString
+ *
+ * @function toString
+ */
 var toString = Object.prototype.toString;
 /**
  * Object#hasOwnProperty
@@ -1616,6 +1662,15 @@ var processors = {
   }
 };
 
+/**
+ * 数据生成器入口
+ *
+ * @export
+ * @param {any} data mock 模板数据
+ * @param {string} key 当前数据的 key
+ * @param {object} opts 公用数据
+ * @returns {any}
+ */
 function generator(data, key, opts) {
   var processor = processors[type(data)];
   return processor ? processor(data, key, opts) : data;
