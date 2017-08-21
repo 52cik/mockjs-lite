@@ -5,20 +5,6 @@
       "label": "Basic",
       "demos": [
         {
-          "title": "Random.boolean( min?, max?, current? )",
-          "label": "boolean",
-          "test": [
-            "// Random.boolean()",
-            "Random.boolean()",
-            "Mock.mock('@boolean')",
-            "Mock.mock('@boolean()')",
-            "",
-            "// Random.boolean( min, max, current )",
-            "Random.boolean(1, 9, true)",
-            "Mock.mock('@boolean(1, 9, true)')"
-          ]
-        },
-        {
           "title": "Random.integer( min?, max? )",
           "label": "integer",
           "test": [
@@ -34,6 +20,20 @@
             "// Random.integer( min, max )",
             "Random.integer(60, 100)",
             "Mock.mock('@integer(60, 100)')"
+          ]
+        },
+        {
+          "title": "Random.boolean( min?, max?, current? )",
+          "label": "boolean",
+          "test": [
+            "// Random.boolean()",
+            "Random.boolean()",
+            "Mock.mock('@boolean')",
+            "Mock.mock('@boolean()')",
+            "",
+            "// Random.boolean( min, max, current )",
+            "Random.boolean(1, 9, true)",
+            "Mock.mock('@boolean(1, 9, true)')"
           ]
         },
         {
@@ -169,16 +169,10 @@
             "",
             "// Random.date( format )",
             "Random.date('yyyy-MM-dd')",
-            "Random.date('yy-MM-dd')",
-            "Random.date('y-MM-dd')",
-            "Random.date('y-M-d')",
+            "Random.date('yyyy-M-d')",
             "",
             "Mock.mock('@date(\"yyyy-MM-dd\")')",
-            "Mock.mock('@date(\"yy-MM-dd\")')",
-            "Mock.mock('@date(\"y-MM-dd\")')",
-            "Mock.mock('@date(\"y-M-d\")')",
-            "",
-            "Mock.mock('@date(\"yyyy yy y MM M dd d\")')"
+            "Mock.mock('@date(\"yyyy-M-d\")')"
           ]
         },
         {
@@ -191,17 +185,11 @@
             "Mock.mock('@time()')",
             "",
             "// Random.time( format )",
-            "Random.time('A HH:mm:ss')",
-            "Random.time('a HH:mm:ss')",
-            "Random.time('HH:mm:ss')",
-            "Random.time('H:m:s')",
+            "Random.time('hh:mm:ss')",
+            "Random.time('h:m:s')",
             "",
-            "Mock.mock('@time(\"A HH:mm:ss\")')",
-            "Mock.mock('@time(\"a HH:mm:ss\")')",
-            "Mock.mock('@time(\"HH:mm:ss\")')",
-            "Mock.mock('@time(\"H:m:s\")')",
-            "",
-            "Mock.mock('@datetime(\"HH H hh h mm m ss s SS S A a T\")')"
+            "Mock.mock('@time(\"hh:mm:ss\")')",
+            "Mock.mock('@time(\"h:m:s\")')"
           ]
         },
         {
@@ -214,21 +202,33 @@
             "Mock.mock('@datetime()')",
             "",
             "// Random.datetime( format )",
-            "Random.datetime('yyyy-MM-dd A HH:mm:ss')",
-            "Random.datetime('yy-MM-dd a HH:mm:ss')",
-            "Random.datetime('y-MM-dd HH:mm:ss')",
-            "Random.datetime('y-M-d H:m:s')",
+            "Random.datetime('yyyy-MM-dd hh:mm:ss')",
+            "Random.datetime('yyyy年MM月dd日 hh时mm分ss秒')",
             "",
-            "Mock.mock('@datetime(\"yyyy-MM-dd A HH:mm:ss\")')",
-            "Mock.mock('@datetime(\"yy-MM-dd a HH:mm:ss\")')",
-            "Mock.mock('@datetime(\"y-MM-dd HH:mm:ss\")')",
-            "Mock.mock('@datetime(\"y-M-d H:m:s\")')",
+            "Mock.mock('@datetime(\"yyyy-MM-dd hh:mm:ss\")')",
+            "Mock.mock('@datetime(\"yyyy年MM月dd日 hh时mm分ss秒\")')",
             "",
-            "Mock.mock('@datetime(\"yyyy yy y MM M dd d HH H hh h mm m ss s SS S A a T\")')"
+            "// datetime( timeStamp )",
+            "Random.datetime(true)",
+            "Random.datetime(10)",
+            "",
+            "Mock.mock('@datetime(true)')",
+            "Mock.mock('@datetime(10)')",
+            "",
+            "// datetime( min, max )",
+            "Random.datetime('2017-08-08 08:00:00', '2017-08-08 18:18:18')",
+            "Mock.mock('@datetime(\"2017-08-08 08:00:00\", \"2017-08-08 18:18:18\")')",
+            "",
+            "// datetime( min, max, timeStamp )",
+            "Random.datetime('2017-08-08 08:00:00', '2017-08-08 18:18:18', true)",
+            "Random.datetime('2017-08-08 08:00:00', '2017-08-08 18:18:18', 10)",
+            "",
+            "Mock.mock('@datetime(\"2017-08-08 08:00:00\", \"2017-08-08 18:18:18\", true)')",
+            "Mock.mock('@datetime(\"2017-08-08 08:00:00\", \"2017-08-08 18:18:18\", 10)')"
           ]
         },
         {
-          "title": "Random.now( unit?, format? )",
+          "title": "Random.now( format? )",
           "label": "now",
           "test": [
             "// Ranndom.now()",
@@ -236,20 +236,16 @@
             "Mock.mock('@now')",
             "Mock.mock('@now()')",
             "",
-            "// Ranndom.now( unit )",
-            "Random.now('year')",
-            "Random.now('month')",
-            "Random.now('week')",
-            "Random.now('day')",
-            "Random.now('hour')",
-            "Random.now('minute')",
-            "Random.now('second')",
-            "",
             "// Ranndom.now( format )",
-            "Random.now('yyyy-MM-dd HH:mm:ss SS')",
+            "Random.now('yyyy-MM-dd hh:mm:ss.S')",
+            "Mock.mock('@now(\"yyyy-MM-dd hh:mm:ss.S\")')",
             "",
-            "// Ranndom.now( unit, format )",
-            "Random.now('day', 'yyyy-MM-dd HH:mm:ss SS')"
+            "// Ranndom.now( timeStamp? )",
+            "Random.now(true)",
+            "Random.now(10)",
+            "",
+            "Mock.mock('@now(true)')",
+            "Mock.mock('@now(10)')"
           ]
         }
       ]
@@ -287,7 +283,11 @@
             "// Random.color()",
             "Random.color()",
             "Mock.mock('@color')",
-            "Mock.mock('@color()')"
+            "Mock.mock('@color()')",
+            "",
+            "// Random.color( color )",
+            "Random.color('blue')",
+            "Mock.mock('@color(\"blue\")')"
           ]
         },
         {
@@ -297,7 +297,11 @@
             "// Random.hex()",
             "Random.hex()",
             "Mock.mock('@hex')",
-            "Mock.mock('@hex()')"
+            "Mock.mock('@hex()')",
+            "",
+            "// Random.hex( sharp )",
+            "Random.hex(true)",
+            "Mock.mock('@hex(true)')"
           ]
         },
         {
@@ -581,33 +585,57 @@
       "label": "Web",
       "demos": [
         {
-          "title": "Random.url()",
+          "title": "Random.url( protocol?, host? )",
           "label": "url",
           "test": [
             "// Random.url()",
             "Random.url()",
             "Mock.mock('@url')",
-            "Mock.mock('@url()')"
+            "Mock.mock('@url()')",
+            "",
+            "// Random.url( protocol )",
+            "Random.url('https')",
+            "Random.url('https')",
+            "Mock.mock('@url(\"https\")')",
+            "",
+            "// Random.url( protocol, host )",
+            "Random.url('https', 'm.taobao.com')",
+            "Mock.mock('@url(\"https\", \"m.taobao.com\")')"
           ]
         },
         {
-          "title": "Random.domain()",
+          "title": "Random.domain( sld?, tld? )",
           "label": "domain",
           "test": [
             "// Random.domain()",
             "Random.domain()",
             "Mock.mock('@domain')",
-            "Mock.mock('@domain()')"
+            "Mock.mock('@domain()')",
+            "",
+            "// Random.domain( sld )",
+            "Random.domain('sso')",
+            "Mock.mock('@domain(\"sso\")')",
+            "",
+            "// Random.domain( sld, tld )",
+            "Random.domain('admin', 'com')",
+            "Mock.mock('@domain(\"admin\", \"com\")')"
           ]
         },
         {
-          "title": "Random.protocol()",
+          "title": "Random.protocol( protocols? )",
           "label": "protocol",
           "test": [
             "// Random.protocol()",
             "Random.protocol()",
             "Mock.mock('@protocol')",
-            "Mock.mock('@protocol()')"
+            "Mock.mock('@protocol()')",
+            "",
+            "// Random.protocol( protocols )",
+            "Random.protocol('http https')",
+            "Random.protocol(['http', 'https'])",
+            "",
+            "Mock.mock('@protocol(\"http https\")')",
+            "Mock.mock('@protocol([\"http\", \"https\"])')"
           ]
         },
         {
@@ -621,13 +649,17 @@
           ]
         },
         {
-          "title": "Random.email()",
+          "title": "Random.email( domain? )",
           "label": "email",
           "test": [
             "// Random.email()",
             "Random.email()",
             "Mock.mock('@email')",
-            "Mock.mock('@email()')"
+            "Mock.mock('@email()')",
+            "",
+            "// Random.email( domain )",
+            "Random.email('gmail.com')",
+            "Mock.mock('@email(\"gmail.com\")')"
           ]
         },
         {
@@ -757,12 +789,15 @@
       "label": "Miscellaneous",
       "demos": [
         {
-          "title": "Random.guid()",
-          "label": "guid",
+          "title": "Random.uuid() / Random.guid()",
+          "label": "uuid",
           "test": [
-            "// Random.guid()",
+            "// Random.uuid() / Random.guid()",
+            "Random.uuid()",
             "Random.guid()",
+            "Mock.mock('@uuid')",
             "Mock.mock('@guid')",
+            "Mock.mock('@uuid()')",
             "Mock.mock('@guid()')"
           ]
         },
@@ -770,7 +805,7 @@
           "title": "Random.id()",
           "label": "id",
           "test": [
-            "// Random.id()",
+            "// Random.id() 身份证号码",
             "Random.id()",
             "Mock.mock('@id')",
             "Mock.mock('@id()')"
@@ -780,12 +815,12 @@
           "title": "Random.increment( step? )",
           "label": "increment",
           "test": [
-            "// Random.increment()",
+            "// Random.increment() 基于上一次值 +1",
             "Random.increment()",
             "Mock.mock('@increment')",
             "Mock.mock('@increment()')",
             "",
-            "// Random.increment( step )",
+            "// Random.increment( step ) 基于上一次值 +step",
             "Random.increment(100)",
             "Mock.mock('@increment(100)')",
             "Random.increment(1000)",
