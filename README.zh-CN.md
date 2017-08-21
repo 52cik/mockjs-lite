@@ -2,7 +2,7 @@
 
 > 一个极简的仿真数据生成器
 
-[官网首页](http://mockjs-lite.js.org)
+[官网首页](https://mockjs-lite.js.org)
 
 
 ## 特别说明
