@@ -1,7 +1,7 @@
 (function (window) {
-  // 别名，一遍控制台测试
-  window.Mock = Mock.Mock;
+  // 别名，以便控制台测试
   window.Random = Mock.Random;
+  window.Mock = Mock.Mock;
 
   // 菜单
   var menuList = [
@@ -131,6 +131,7 @@
 
     data: {
       DTD: DTD,
+      DPD: DPD,
       menuList: menuList,
     },
 
@@ -145,12 +146,15 @@
       },
 
       // 显示源码
-      showSource: function(value) {
-        return 'Mock.mock(' + this.highlight(value, 'js') + ');';
+      showSource: function(value, type) {
+        if (type === 'DTD') {
+          return 'Mock.mock(' + this.highlight(value, 'js') + ');';
+        }
+        return this.highlight(value.join('\n'), 'js');
       },
 
       // 显示 mock 结果
-      showResult: function(value) {
+      showResultDTD: function(value) {
         if (!value.$orgData) {
           var data = isString(value)
             ? (new Function('return ' + value))()
@@ -160,8 +164,22 @@
         return this.highlight(Mock.mock(value.$orgData));
       },
 
+      // 显示 mock 结果
+      showResultDPD: function(arr) {
+        var ret = [];
+        arr.forEach(function(it) {
+          if (it.indexOf('//') > -1) {
+            ret.push(it);
+          } else {
+            const aaa = (new Function('return ' + it))();
+            ret.push(JSON.stringify((new Function('return ' + it))()));
+          }
+        });
+        return this.highlight(ret.join('\n'), 'js');
+      },
+
       // 刷新
-      onRefresh: function(value, event) {
+      onRefresh: function(value, type, event) {
         var target = event.target;
 
         if (target.tagName === 'I') {
@@ -171,8 +189,8 @@
         }
 
         var code = target.previousElementSibling.children[0];
-        code.innerHTML = this.showResult(value);
-      }
+        code.innerHTML = this['showResult' + type](value);
+      },
     }
   });
 })(window);

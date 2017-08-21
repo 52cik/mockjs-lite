@@ -55,10 +55,10 @@
 
             <p class="menu-label">数据占位符定义</p>
             <ul class="menu-list">
-              <li v-for="group of menuList[1].children">
+              <li v-for="group of DPD">
                 <p class="menu-label">{{group.label}}</p>
                 <ul>
-                  <li v-for="it of group.children"><a :href="it.href">{{it.label}}</a></li>
+                  <li v-for="it of group.demos"><a :href="'#' + it.title">{{it.label}}</a></li>
                 </ul>
               </li>
             </ul>
@@ -74,11 +74,31 @@
               <code>{{demo.title}}</code>
               <div v-for="test of demo.test" class="columns">
                 <div class="column code is-half">
-                  <pre><code class="hljs js" v-html="showSource(test)"></code></pre>
+                  <pre><code class="hljs js" v-html="showSource(test, 'DTD')"></code></pre>
                 </div>
                 <div class="column result is-half">
-                  <pre><code class="hljs json" v-html="showResult(test)"></code></pre>
-                  <a class="button is-light refresh" @click="onRefresh(test, $event)">
+                  <pre><code class="hljs json" v-html="showResultDTD(test)"></code></pre>
+                  <a class="button is-light refresh" @click="onRefresh(test, 'DTD', $event)">
+                    <span class="icon is-small"><i class="fa fa-refresh"></i></span>
+                  </a>
+                </div>
+              </div>
+            </template>
+          </section>
+
+          <h5 class="title is-5">数据占位符定义</h5>
+          <section v-for="item of DPD">
+            <h6 class="title is-6" :id="item.label">{{item.label}}</h6>
+
+            <template v-for="demo of item.demos">
+              <code :id="demo.title">{{demo.title}}</code>
+              <div class="columns">
+                <div class="column code is-half">
+                  <pre><code class="hljs js" v-html="showSource(demo.test, 'DPD')"></code></pre>
+                </div>
+                <div class="column result is-half">
+                  <pre><code class="hljs json" v-html="showResultDPD(demo.test)"></code></pre>
+                  <a class="button is-light refresh" @click="onRefresh(demo.test, 'DPD', $event)">
                     <span class="icon is-small"><i class="fa fa-refresh"></i></span>
                   </a>
                 </div>
