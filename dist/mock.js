@@ -1,5 +1,5 @@
 /*!
- * Mockjs-lite v0.2.0
+ * Mockjs-lite v0.2.2
  * (c) 2017-2017 楼教主 <fe.52cik@gmail.com> (https://github.com/52cik/mockjs-lite)
  * Released under the MIT License.
  */
