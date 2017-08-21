@@ -53,6 +53,6 @@ test('Random.now', (t) => {
   t.true(Random.now() === date);
   t.true(Random.now('yyyyMMddhhmmss') === date.replace(/[-: ]/g, ''));
 
-  t.true(Random.now(true) === Date.now());
+  t.true((Random.now(true) / 1000 | 0) === (Date.now() / 1000 | 0));
   t.true(Random.now(10) === (Date.now() / 1000 | 0));
 });

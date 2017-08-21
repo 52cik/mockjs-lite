@@ -64,7 +64,8 @@ function float(min, max, dmin, dmax) {
   dmin = Math.max(Math.min(dmin, 17), 0);
 
   var dcount = integer(dmin, dmax);
-  var ret = (max ? integer(min, max) : min) + '.' + string('number', dcount - 1) + character('123456789');
+  var intPart = max ? integer(min, max) : min || integer();
+  var ret = intPart + '.' + string('number', dcount - 1) + character('123456789');
   return parseFloat(ret, 10);
 }
 
@@ -94,11 +95,24 @@ var char = character;
 function string(pool, min, max) {
   var count = 0;
 
+  // string()
+  // string( length )
+  // string( pool, length )
+  // string( min, max )
+  // string( pool, min, max )
+
+  var isNumPool = typeof pool === 'number';
+
   if (max !== undefined) {
     count = integer(min, max);
   } else if (min !== undefined) {
-    count = +min;
-  } else if (typeof pool === 'number') {
+    if (isNumPool) {
+      count = integer(pool, min);
+      pool = undefined;
+    } else {
+      count = +min;
+    }
+  } else if (isNumPool) {
     count = parseInt(pool, 10);
     pool = undefined;
   } else {
@@ -358,6 +372,7 @@ function datetime(format, min, max) {
     case 2:
       // datetime(min, max)
       dt = randomDate(format, min);
+      format = undefined;
       break;
     case 3:
       // datetime(min, max, timeStamp)
@@ -370,6 +385,7 @@ function datetime(format, min, max) {
       }
       break;
     default:
+      break;
   }
 
   // 时间戳处理

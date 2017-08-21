@@ -123,6 +123,7 @@ export function datetime(format, min, max) {
     case 2:
       // datetime(min, max)
       dt = randomDate(format, min);
+      format = undefined;
       break;
     case 3:
       // datetime(min, max, timeStamp)
@@ -135,6 +136,7 @@ export function datetime(format, min, max) {
       }
       break;
     default:
+      break;
   }
 
   // 时间戳处理

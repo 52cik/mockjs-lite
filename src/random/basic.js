@@ -53,7 +53,8 @@ export function float(min, max, dmin, dmax) {
   dmin = Math.max(Math.min(dmin, 17), 0);
 
   const dcount = integer(dmin, dmax);
-  const ret = `${max ? integer(min, max) : min}.${string('number', dcount - 1)}${character('123456789')}`;
+  const intPart = max ? integer(min, max) : (min || integer());
+  const ret = `${intPart}.${string('number', dcount - 1)}${character('123456789')}`;
   return parseFloat(ret, 10);
 }
 
@@ -83,11 +84,24 @@ export const char = character;
 export function string(pool, min, max) {
   let count = 0;
 
+  // string()
+  // string( length )
+  // string( pool, length )
+  // string( min, max )
+  // string( pool, min, max )
+
+  const isNumPool = typeof pool === 'number';
+
   if (max !== undefined) {
     count = integer(min, max);
   } else if (min !== undefined) {
-    count = +min;
-  } else if (typeof pool === 'number') {
+    if (isNumPool) {
+      count = integer(pool, min);
+      pool = undefined;
+    } else {
+      count = +min;
+    }
+  } else if (isNumPool) {
     count = parseInt(pool, 10);
     pool = undefined;
   } else {
