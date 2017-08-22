@@ -1,5 +1,5 @@
 /*!
- * Mockjs-lite v0.2.2
+ * Mockjs-lite v0.3.0
  * (c) 2017-2017 楼教主 <fe.52cik@gmail.com> (https://github.com/52cik/mockjs-lite)
  * Released under the MIT License.
  */
@@ -64,7 +64,7 @@ function float(min, max, dmin, dmax) {
   dmin = Math.max(Math.min(dmin, 17), 0);
 
   var dcount = integer(dmin, dmax);
-  var intPart = max ? integer(min, max) : min || integer();
+  var intPart = max ? integer(min, max - 1) : min || integer();
   var ret = intPart + '.' + string('number', dcount - 1) + character('123456789');
   return parseFloat(ret, 10);
 }
@@ -498,6 +498,9 @@ var DICT = {
   black: '#111111',
   white: '#FFFFFF'
 };
+
+// 暴露出去，方便插件使用
+var COLOR_DICT = DICT;
 
 var goldenRatio = 0.618033988749895;
 var hue = Math.random();
@@ -1235,6 +1238,9 @@ var DICT$2 = tree(parse(DICT$1));
 
 var REGION = ['东北', '华北', '华东', '华中', '华南', '西南', '西北'];
 
+// 暴露出去，方便插件使用
+var ADDRESS_DICT = DICT$2;
+
 /**
  * 随机生成一个大区
  *
@@ -1373,6 +1379,15 @@ function mobile() {
   return '1' + character('34578') + string('number', 9);
 }
 
+/**
+ * 插件模块
+ *
+ * 目前试验阶段，还未正式定型
+ */
+
+/* eslint import/prefer-default-export: 0 */
+var plugins = {};
+
 
 
 var Random = Object.freeze({
@@ -1397,6 +1412,7 @@ var Random = Object.freeze({
 	now: now,
 	setImageHost: setImageHost,
 	image: image,
+	COLOR_DICT: COLOR_DICT,
 	hex: hex,
 	rgb: rgb,
 	rgba: rgba,
@@ -1422,6 +1438,7 @@ var Random = Object.freeze({
 	url: url,
 	email: email,
 	ip: ip,
+	ADDRESS_DICT: ADDRESS_DICT,
 	region: region,
 	province: province,
 	city: city,
@@ -1432,7 +1449,8 @@ var Random = Object.freeze({
 	id: id,
 	increment: increment,
 	inc: inc,
-	mobile: mobile
+	mobile: mobile,
+	plugins: plugins
 });
 
 /* eslint no-confusing-arrow:0 */
@@ -1473,6 +1491,41 @@ function match(key, re) {
     return null;
   }
   return key.match(re);
+}
+
+/**
+ * 占位符处理
+ *
+ * @param {string} holder
+ * @param {string} param
+ * @returns
+ */
+function placeholder(all, holder, param, opts) {
+  // 优先使用兄弟节点值
+  if (opts.parent && hasOwnProperty.call(opts.parent, holder)) {
+    return opts.parent[holder];
+  }
+
+  // 如果没有工具方法则返回所有
+  if (!hasOwnProperty.call(Random, holder) && !hasOwnProperty.call(plugins, holder)) {
+    return all;
+  }
+
+  var params = [];
+
+  if (param) {
+    try {
+      /* eslint no-new-func:0 */
+      params = new Function('return [' + param + ']')();
+    } catch (err) {
+      // noop
+    }
+  }
+
+  // 调用占位符方法
+  var fn = Random[holder] || plugins[holder];
+  /* eslint prefer-spread: 0 */
+  return fn.apply(null, params);
 }
 
 // 处理根据
@@ -1609,7 +1662,7 @@ var processors = {
 
 
   // 字符串处理
-  string: function string$$1(tpl, key) {
+  string: function string$$1(tpl, key, opts) {
     // 'name|min-max': string  重复 string 字符串 min-max 次
     // 'name|count': string  重复 string 字符串 count次
     var count = 0; // 重复次数
@@ -1636,25 +1689,18 @@ var processors = {
       str$$1 = Array(count + 1).join(tpl); // 重复N次
     }
 
-    // 占位符处理 'name': '@date @now @name'
+    var mHolder = str$$1.match(/^@(\w+)(?:\(([^)]*)\))?$/);
+
+    if (mHolder) {
+      // 'name': '@now(true)'
+      // 单占位符处理 (保持数据类型)
+      return placeholder(str$$1, mHolder[1], mHolder[2], opts);
+    }
+
+    // 'name': '@date @now @name'
+    // 多占位符处理 (输出字符串)
     str$$1 = str$$1.replace(/@(\w+)(?:\(([^)]*)\))?/g, function (all, holder, param) {
-      if (!hasOwnProperty.call(Random, holder)) {
-        return all;
-      }
-
-      var params = [];
-
-      if (param) {
-        try {
-          /* eslint no-new-func:0 */
-          params = new Function('return [' + param + ']')();
-        } catch (err) {
-          // noop
-        }
-      }
-
-      // 调用占位符方法
-      return Random[holder].apply(null, params);
+      return placeholder(all, holder, param, opts);
     });
 
     return str$$1;
@@ -1694,6 +1740,12 @@ function generator(data, key, opts) {
 
 // 生成器包装
 var Mock = {
+  /**
+   * mock入口
+   *
+   * @param {any} any
+   * @returns
+   */
   mock: function mock(any) {
     var opts = { rootTpl: any, callbacks: [] };
     var root = generator(any, '', opts);
@@ -1705,6 +1757,17 @@ var Mock = {
     });
 
     return root;
+  },
+
+
+  /**
+   * 插件扩展 (试验阶段)
+   *
+   * @export
+   * @param {function} plugin
+   */
+  use: function use(plugin) {
+    plugin(plugins, Random, Mock);
   }
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "mockjs-lite",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A minimalist simulation data generator",
   "main": "dist/mock.js",
   "scripts": {
