@@ -4,6 +4,9 @@ import DICT from './address_dict';
 
 const REGION = ['东北', '华北', '华东', '华中', '华南', '西南', '西北'];
 
+// 暴露出去，方便插件使用
+export const ADDRESS_DICT = DICT;
+
 /**
  * 随机生成一个大区
  *

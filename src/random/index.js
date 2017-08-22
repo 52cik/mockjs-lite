@@ -8,3 +8,4 @@ export * from './name';
 export * from './web';
 export * from './address';
 export * from './misc';
+export * from './plugin';

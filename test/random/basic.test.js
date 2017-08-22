@@ -22,10 +22,10 @@ test('Random.float', (t) => {
   t.true(typeof Random.float() === 'number');
   let ret = Random.float(1, 9, 3);
   t.true(ret > 1 && ret < 10 && String(ret).length >= 5);
-  ret = Random.float(9, 9, 3);
-  t.true(Math.floor(ret) === 9 && String(ret).length >= 5);
-  ret = Random.float(9, 9, 3, 5);
-  t.true(Math.floor(ret) === 9 && String(ret).length <= 7);
+  ret = Random.float(1, 2, 3);
+  t.true(Math.floor(ret) === 1 && String(ret).length >= 5);
+  ret = Random.float(0, 1, 3, 5);
+  t.true(Math.floor(ret) === 0 && String(ret).length <= 7);
 });
 
 test('Random.character', (t) => {

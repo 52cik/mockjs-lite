@@ -40,6 +40,41 @@ function match(key, re) {
   return key.match(re);
 }
 
+/**
+ * 占位符处理
+ *
+ * @param {string} holder
+ * @param {string} param
+ * @returns
+ */
+function placeholder(all, holder, param, opts) {
+  // 优先使用兄弟节点值
+  if (opts.parent && hasOwnProperty.call(opts.parent, holder)) {
+    return opts.parent[holder];
+  }
+
+  // 如果没有工具方法则返回所有
+  if (!hasOwnProperty.call(Random, holder) && !hasOwnProperty.call(Random.plugins, holder)) {
+    return all;
+  }
+
+  let params = [];
+
+  if (param) {
+    try {
+      /* eslint no-new-func:0 */
+      params = new Function(`return [${param}]`)();
+    } catch (err) {
+      // noop
+    }
+  }
+
+  // 调用占位符方法
+  const fn = Random[holder] || Random.plugins[holder];
+  /* eslint prefer-spread: 0 */
+  return fn.apply(null, params);
+}
+
 // 处理根据
 const processors = {
   // 对象处理
@@ -160,7 +195,7 @@ const processors = {
   },
 
   // 字符串处理
-  string(tpl, key) {
+  string(tpl, key, opts) {
     // 'name|min-max': string  重复 string 字符串 min-max 次
     // 'name|count': string  重复 string 字符串 count次
     let count = 0; // 重复次数
@@ -187,26 +222,17 @@ const processors = {
       str = Array(count + 1).join(tpl); // 重复N次
     }
 
-    // 占位符处理 'name': '@date @now @name'
-    str = str.replace(/@(\w+)(?:\(([^)]*)\))?/g, (all, holder, param) => {
-      if (!hasOwnProperty.call(Random, holder)) {
-        return all;
-      }
+    const mHolder = str.match(/^@(\w+)(?:\(([^)]*)\))?$/);
 
-      let params = [];
+    if (mHolder) {
+      // 'name': '@now(true)'
+      // 单占位符处理 (保持数据类型)
+      return placeholder(str, mHolder[1], mHolder[2], opts);
+    }
 
-      if (param) {
-        try {
-          /* eslint no-new-func:0 */
-          params = new Function(`return [${param}]`)();
-        } catch (err) {
-          // noop
-        }
-      }
-
-      // 调用占位符方法
-      return Random[holder].apply(null, params);
-    });
+    // 'name': '@date @now @name'
+    // 多占位符处理 (输出字符串)
+    str = str.replace(/@(\w+)(?:\(([^)]*)\))?/g, (all, holder, param) => placeholder(all, holder, param, opts));
 
     return str;
   },

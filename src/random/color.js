@@ -1,5 +1,8 @@
 import DICT from './color_dict';
 
+// 暴露出去，方便插件使用
+export const COLOR_DICT = DICT;
+
 const goldenRatio = 0.618033988749895;
 let hue = Math.random();
 

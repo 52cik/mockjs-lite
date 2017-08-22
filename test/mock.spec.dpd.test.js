@@ -36,6 +36,6 @@ test('name|+1: ["@integer", "@email", "@boolean"]', (t) => {
 
   t.regex(
     JSON.stringify(ret),
-    /(?=.+"name":"-?\d+")(?=.+"name":"(true|false)")(?=.+"name":"[a-z.@]+")/,
+    /(?=.+"name":-?\d+)(?=.+"name":(true|false))(?=.+"name":"[a-z.@]+")/,
   );
 });

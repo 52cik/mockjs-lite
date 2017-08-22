@@ -5,6 +5,12 @@ export { Random };
 
 // 生成器包装
 export const Mock = {
+  /**
+   * mock入口
+   *
+   * @param {any} any
+   * @returns
+   */
   mock(any) {
     const opts = { rootTpl: any, callbacks: [] };
     const root = generator(any, '', opts);
@@ -16,6 +22,16 @@ export const Mock = {
     });
 
     return root;
+  },
+
+  /**
+   * 插件扩展 (试验阶段)
+   *
+   * @export
+   * @param {function} plugin
+   */
+  use(plugin) {
+    plugin(Random.plugins, Random, Mock);
   },
 };
 

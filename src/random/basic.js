@@ -53,7 +53,7 @@ export function float(min, max, dmin, dmax) {
   dmin = Math.max(Math.min(dmin, 17), 0);
 
   const dcount = integer(dmin, dmax);
-  const intPart = max ? integer(min, max) : (min || integer());
+  const intPart = max ? integer(min, max - 1) : (min || integer());
   const ret = `${intPart}.${string('number', dcount - 1)}${character('123456789')}`;
   return parseFloat(ret, 10);
 }
