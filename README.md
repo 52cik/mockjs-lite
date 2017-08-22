@@ -11,6 +11,9 @@
 
 [中文文档](README.zh-CN.md)
 
+[website](http://mockjs-lite.js.org)
+
+
 Refer to [Mock.js](https://github.com/nuysoft/Mock)
 
 Retained the common functions and modified some tool methods.
