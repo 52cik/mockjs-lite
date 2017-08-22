@@ -4,12 +4,8 @@ import { version } from './package.json';
 
 const NODE_ENV = process.env.NODE_ENV;
 const plugins = [babel()];
-let fileName = 'mock.js';
 
-if (NODE_ENV === 'production') {
-  plugins.push(uglify());
-  fileName = 'mock.min.js';
-}
+let fileName = 'mock.js';
 
 const banner = `
 /*!
@@ -18,6 +14,13 @@ const banner = `
  * Released under the MIT License.
  */
 `.trim();
+
+
+// 发布时压缩
+if (NODE_ENV === 'production') {
+  plugins.push(uglify({ output: { preamble: banner } }));
+  fileName = 'mock.min.js';
+}
 
 export default {
   entry: 'src/mock.js',
