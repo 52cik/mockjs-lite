@@ -1,5 +1,5 @@
 /*!
- * Mockjs-lite v0.3.0
+ * Mockjs-lite v0.3.1
  * (c) 2017-2017 楼教主 <fe.52cik@gmail.com> (https://github.com/52cik/mockjs-lite)
  * Released under the MIT License.
  */
@@ -1528,7 +1528,7 @@ function placeholder(all, holder, param, opts) {
   return fn.apply(null, params);
 }
 
-// 处理根据
+// 数据类型处理器
 var processors = {
   // 对象处理
   object: function object(tpl, key, opts) {
@@ -1738,42 +1738,46 @@ function generator(data, key, opts) {
   return processor ? processor(data, key, opts) : data;
 }
 
-// 生成器包装
-var Mock = {
-  /**
-   * mock入口
-   *
-   * @param {any} any
-   * @returns
-   */
-  mock: function mock(any) {
-    var opts = { rootTpl: any, callbacks: [] };
-    var root = generator(any, '', opts);
+/**
+ * mock入口
+ *
+ * @param {any} any
+ * @returns
+ */
+function mock(any) {
+  var opts = { rootTpl: any, callbacks: [] };
+  var root = generator(any, '', opts);
 
-    // 处理函数回调
-    opts.callbacks.forEach(function (opt) {
-      // this 是当前父节点对象，root 是跟对象
-      opt.parent[opt.key] = opt.fn.call(opt.parent, root);
-    });
+  // 处理函数回调
+  opts.callbacks.forEach(function (opt) {
+    // this 是当前父节点对象，root 是跟对象
+    opt.parent[opt.key] = opt.fn.call(opt.parent, root);
+  });
 
-    return root;
-  },
+  return root;
+}
 
+/**
+ * 插件扩展 (试验阶段)
+ *
+ * @export
+ * @param {function} plugin
+ */
+function use(plugin) {
+  plugin(plugins, processors, Random);
+}
 
-  /**
-   * 插件扩展 (试验阶段)
-   *
-   * @export
-   * @param {function} plugin
-   */
-  use: function use(plugin) {
-    plugin(plugins, Random, Mock);
-  }
+// 默认导出
+var mock$1 = {
+  mock: mock,
+  use: use,
+  Random: Random
 };
 
 exports.Random = Random;
-exports.Mock = Mock;
-exports['default'] = Mock;
+exports.mock = mock;
+exports.use = use;
+exports['default'] = mock$1;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
