@@ -1,7 +1,6 @@
 (function (window) {
   // 别名，以便控制台测试
   window.Random = Mock.Random;
-  window.Mock = Mock.Mock;
 
   // 菜单
   var menuList = [

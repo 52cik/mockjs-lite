@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="//lib.baomitu.com/bulma/0.5.1/css/bulma.min.css" rel="stylesheet">
+  <link href="//lib.baomitu.com/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet">
+  <link href="//lib.baomitu.com/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+  <title>mockjs-lite 教程</title>
+  <style>
+    .is-fixed { position: fixed; }
+    .main > .section {padding: 0 1.5rem;}
+  </style>
+</head>
+<body>
+<div id="app">
+  <section class="hero is-primary">
+    <div class="hero-head">
+      <header class="nav">
+        <div class="container">
+          <div class="nav-left">
+            <a href="/docs/index.html" class="nav-item">
+              <strong>Mockjs Lite</strong>
+            </a>
+          </div>
+          <div class="nav-right nav-menu">
+            <a class="nav-item" href="/docs/index.html">首页</a>
+            <a class="nav-item is-active" href="/docs/guides.html">教程</a>
+            <a class="nav-item" href="/docs/examples.html">示例</a>
+            <a class="nav-item" href="https://github.com/52cik/mockjs-lite" target="_blank">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+
+        <div class="column is-2 is-fixed">
+            <aside class="menu">
+              <ul class="menu-list">
+                <li v-for="(it, idx) of menuList" @click="loadMD(it, idx)">
+                  <a :class="{'is-active': menuActive === idx}">{{it.title}}</a>
+                </li>
+              </ul>
+            </aside>
+        </div>
+
+        <div class="column main is-9 is-offset-2">
+          <section class="section">
+            <div class="content" v-html="content"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="//lib.baomitu.com/vue/2.4.2/vue.min.js"></script>
+<script src="//lib.baomitu.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//lib.baomitu.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//lib.baomitu.com/markdown-it/8.4.0/markdown-it.min.js"></script>
+<script src="/dist/mock.js"></script>
+<script>
+(function () {
+  hljs.initHighlightingOnLoad();
+  var md = window.markdownit();
+
+  var cache = {};
+
+  function loadMarkDown(url, cb) {
+    if (cache[url]) {
+      return cb(cache[url]);
+    }
+    $.get(url, function(data) {
+      cache[url] = md.render(data).replace(/language-/g, '');
+      cb(cache[url]);
+    });
+  }
+
+  var app = new Vue({
+    el: '#app',
+    data: {
+      menuActive: 0,
+      menuList: [
+        { title: '介绍', md: '/docs/md/introduction.md' },
+        { title: '使用', md: '/docs/md/use.md' },
+        { title: '语法规范', md: '/docs/md/syntax-specification.md' },
+      ],
+      content: '',
+    },
+    methods: {
+      loadMD: function(it, idx) {
+        var self = this;
+        self.menuActive = idx;
+        loadMarkDown(it.md, function(data) {
+          self.content = data;
+          Vue.nextTick(function() {
+            $('pre>code').each(function(i, block) {
+              hljs.highlightBlock(block);
+            });
+          });
+        });
+      }
+    },
+    mounted() {
+      this.loadMD(this.menuList[0], 0);
+    }
+  });
+})();
+</script>
+</body>
+</html>
