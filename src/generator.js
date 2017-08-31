@@ -75,8 +75,8 @@ function placeholder(all, holder, param, opts) {
   return fn.apply(null, params);
 }
 
-// 处理根据
-const processors = {
+// 数据类型处理器
+export const processors = {
   // 对象处理
   object(tpl, key, opts) {
     // 'name|count': object
