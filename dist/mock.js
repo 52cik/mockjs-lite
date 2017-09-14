@@ -1,5 +1,5 @@
 /*!
- * Mockjs-lite v0.3.1
+ * Mockjs-lite v0.3.2
  * (c) 2017-2017 楼教主 <fe.52cik@gmail.com> (https://github.com/52cik/mockjs-lite)
  * Released under the MIT License.
  */
@@ -1613,16 +1613,21 @@ var processors = {
       }
     }
 
-    // 重复 count 次
-
-    var _loop = function _loop(i) {
-      tpl.forEach(function (it) {
-        return result.push(generator(it, i, opts));
+    if (count === 0) {
+      tpl.forEach(function (it, idx) {
+        return result.push(generator(it, idx, opts));
       });
-    };
+    } else {
+      var _loop = function _loop(i) {
+        tpl.forEach(function (it) {
+          return result.push(generator(it, i, opts));
+        });
+      };
 
-    for (var i = 0; i < count; i += 1) {
-      _loop(i);
+      // 重复 count 次
+      for (var i = 0; i < count; i += 1) {
+        _loop(i);
+      }
     }
 
     return result;
