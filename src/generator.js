@@ -155,9 +155,13 @@ export const processors = {
       }
     }
 
-    // 重复 count 次
-    for (let i = 0; i < count; i += 1) {
-      tpl.forEach(it => result.push(generator(it, i, opts)));
+    if (count === 0) {
+      tpl.forEach((it, idx) => result.push(generator(it, idx, opts)));
+    } else {
+      // 重复 count 次
+      for (let i = 0; i < count; i += 1) {
+        tpl.forEach(it => result.push(generator(it, i, opts)));
+      }
     }
 
     return result;

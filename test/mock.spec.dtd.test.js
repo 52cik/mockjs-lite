@@ -112,6 +112,16 @@ test('Mock.mock({"array|3":[{"id|+1":10}]})', (t) => {
   });
 });
 
+// 'name': array
+test('Mock.mock({"array":[1,2,3]})', (t) => {
+  const ret = Mock.mock({
+    array: [1, 2, 3],
+  });
+  t.deepEqual(ret, {
+    array: [1, 2, 3],
+  });
+});
+
 /* function */
 // 'name': function
 test('Mock.mock({ "name": function })', (t) => {
