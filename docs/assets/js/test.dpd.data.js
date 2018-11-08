@@ -262,13 +262,13 @@
             "// Random.image( size )",
             "Random.image('200x100')",
             "// Random.image( size, background )",
-            "Random.image('200x100', '#FF6600')",
+            "Random.image('200x100', 'f60')",
             "// Random.image( size, background, text )",
-            "Random.image('200x100', '#4A7BF7', 'Hello')",
+            "Random.image('200x100', '4A7BF7', 'Hello')",
             "// Random.image( size, background, foreground, text )",
-            "Random.image('200x100', '#50B347', '#FFF', 'Mock.js')",
+            "Random.image('200x100', '50B347', 'FFF', 'Mock.js')",
             "// Random.image( size, background, foreground, format, text )",
-            "Random.image('200x100', '#894FC4', '#FFF', 'png', '!')"
+            "Random.image('200x100', '894FC4', 'FFF', 'png', '!')"
           ]
         }
       ]
