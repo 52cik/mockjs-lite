@@ -1,7 +1,8 @@
 import { pick } from './helper';
 
-// 七牛占位图 host，支持 https
-let host = 'dn-placeholder.qbox.me';
+// 占位图 host，支持 https
+let host = 'placehold.it';
+
 
 // 常见的广告宽高
 const adSize = [
