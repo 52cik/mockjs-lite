@@ -1,6 +1,6 @@
 /*!
- * Mockjs-lite v0.3.2
- * (c) 2017-2017 楼教主 <fe.52cik@gmail.com> (https://github.com/52cik/mockjs-lite)
+ * Mockjs-lite v0.3.3
+ * (c) 2017-2018 楼教主 <fe.52cik@gmail.com> (https://github.com/52cik/mockjs-lite)
  * Released under the MIT License.
  */
 (function (global, factory) {
@@ -410,8 +410,8 @@ function now(format) {
   return dateFormat(format || 'yyyy-MM-dd hh:mm:ss', new Date());
 }
 
-// 七牛占位图 host，支持 https
-var host = 'dn-placeholder.qbox.me';
+// 占位图 host，支持 https
+var host = 'placehold.it';
 
 // 常见的广告宽高
 var adSize = ['300x250', '250x250', '240x400', '336x280', '180x150', '720x300', '468x60', '234x60', '88x31', '120x90', '120x60', '120x240', '125x125', '728x90', '160x600', '120x600', '300x600'];
